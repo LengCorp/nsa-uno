@@ -10,4 +10,7 @@ Hade tänkt mig följande mappstruktur:
     │   ├── include     # Filer som inkluderas and stuffs
     │   ├── css         # Sidspecifik css
     │   └── bootstrap   # Bootstrap biblioteket
+    ├── index.php
+    ├── historik.php       
+    ├── login.php       
     └── classes         # php-klasser och business logic
