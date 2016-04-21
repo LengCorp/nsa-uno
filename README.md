@@ -9,7 +9,8 @@ Hade tänkt mig följande mappstruktur:
     │   ├── js          # Sidspecifik javascript
     │   ├── include     # Filer som inkluderas and stuffs
     │   ├── css         # Sidspecifik css
-    │   └── bootstrap   # Bootstrap biblioteket
+    │   ├── bootstrap   # Bootstrap biblioteket
+    │   └── images      # Eventuella bilder
     ├── index.php
     ├── historik.php       
     ├── login.php       
