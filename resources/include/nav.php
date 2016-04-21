@@ -19,9 +19,13 @@
 				<li <?php if($page == 'hem') echo 'class="active"' ?>>
 					<a href=".">Hem</a>
 				</li>
-			    <li>
+			    <li <?php if($page == 'historik') echo 'class="active"' ?>>
             <a href="historik.php">Historik</a>
           </li>
+				</li>
+		    <li <?php if($page == 'login') echo 'class="active"' ?>>
+          <a href="login.php">Logga in</a>
+        </li>
 			</ul>
 		</div>
 	</div>
