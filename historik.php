@@ -1,7 +1,7 @@
 <?php
-$page = "historik"
-include 'resources/include/header.php'
-include 'resources/include/nav.php'
+$page = "historik";
+include 'resources/include/header.php';
+include 'resources/include/nav.php';
 ?>
 
 <?php 
