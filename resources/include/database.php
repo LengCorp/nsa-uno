@@ -68,13 +68,18 @@ function DatabaseSelect($DBpage){
             }
 
             //decide color for the output
-            $color = "black";
-            for($i = 0; $i < sizeof($event); $i++){
-                if($event[$i]["type"] == "ON")
-                    $color = "red";
-                else if($event[$i]["type"] == "OFF")
-                    $color = "green";
-                echo "<tr style='color: $color; font-weight: bold;'>";
+            $color = [];
+            for($i = 0; $i < sizeof($event); $i++) {
+                if ($event[$i]["type"] == "ON")
+                    $color[$i] = "red";
+                else if ($event[$i]["type"] == "OFF")
+                    $color[$i] = "green";
+                else
+                    $color[$i] = $color[$i - 1];
+            }
+
+            for($i = sizeof($event) - 1; $i >= 0; $i--){
+                echo "<tr style='color: $color[$i]; font-weight: bold;'>";
                 echo "<td>" . $event[$i]["id"] . "</td><td>" . $event[$i]["time"] . "</td><td>" . $event[$i]["type"] . "</td>";
                 echo "</tr>";
             }
