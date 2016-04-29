@@ -28,9 +28,17 @@ function DatabaseSelect(){
 
     if ($result) {
         // output data of each row
+        echo "<div class='container'>";
+        echo "<table class='table table-striped'>";
+        echo "<thead>";
+        echo "<tr><th>id</th><th>Time</th><th>Type</th></tr>";
+        echo "<tbody>";
         while($row = $result->fetch_assoc()) {
-            echo "id: " . $row["id"]. " - Time: " . $row["time"]. "  - Type: " . $row["type"]. "<br>";
+            echo "<tr>";
+            echo "<td>" . $row["id"]. "</td><td>" . $row["time"]. "</td><td>" . $row["type"]. "</td>";
+            echo "</tr>";
         }
+        echo "</div>";
     } else {
         echo "0 results";
     }
