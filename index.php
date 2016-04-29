@@ -11,7 +11,7 @@ include 'resources/include/database.php';
 <?php
 
 echo '<br>';
-DatabaseSelect();
+DatabaseSelect("index");
 
 
 include 'resources/include/footer.php';
