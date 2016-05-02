@@ -6,9 +6,13 @@ include 'resources/include/database.php';
 
 ?>
 
-<button onclick="javascript:return DatabaseInsert(1);">Starta larmet!</button><br>
-<button onclick="javascript:return DatabaseInsert(2);">Stäng av larmet!</button><br>
-<button onclick="javascript:return DatabaseInsert(3);">Skicka en trigger!</button>
+<div class="container">
+    <button class="btn btn-primary" onclick="javascript:return DatabaseInsert(1);">Starta larmet!</button>
+    <br>
+    <button class="btn btn-primary" onclick="javascript:return DatabaseInsert(2);">Stäng av larmet!</button>
+    <br>
+    <button class="btn btn-primary" onclick="javascript:return DatabaseInsert(3);">Skicka en trigger!</button>
+</div>
 
 <?php
 
