@@ -15,8 +15,6 @@ function DatabaseConnect()
         die("Database connection failed: " . mysqli_connect_error());
     }
 
-    echo "Connected successfully<br>";
-
     return $conn;
 }
 
@@ -123,7 +121,7 @@ if (isset($_GET["insert"])) {
 
         $conn = DatabaseConnect();
 
-        $sql = "INSERT INTO event (id, time, type) VALUES (NULL, CURRENT_TIMESTAMP, $type)";
+        $sql = "INSERT INTO event (type) VALUES ($type)";
         $timestamp = date("Y-m-d H:i:s");
 
         if ($conn->query($sql) === TRUE) {
