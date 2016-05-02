@@ -24,7 +24,7 @@ function DatabaseSelect($DBpage)
     $conn = DatabaseConnect();
 
     if ($DBpage == "index") {
-        $sql = "SELECT time, eventtype.type FROM event JOIN eventtype on event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
+        $sql = "SELECT time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
         $result = $conn->query($sql);
 
         if ($result) {
@@ -33,18 +33,27 @@ function DatabaseSelect($DBpage)
             echo "<thead>";
             echo "<tr><th>Time</th><th>Status</th></tr>";
             echo "<tbody>";
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td class='index_time'>" . $row["time"] . "</td><td class='index_status'>" . $row["type"] . "</td>";
-                echo "</tr>";
-                break;
-            }
+            $row = $result->fetch_assoc();
+            echo "<tr>";
+            echo "<td class='index_time'>" . $row["time"] . "</td><td class='index_status'>" . $row["type"] . "</td>";
+            echo "</tr>";
             echo "</div>";
+            if ($row["type"] == "ON"){
+                echo "<script type='text/javascript'>
+$('.onButton').addClass('disabled');
+$('.offButton').removeClass('disabled');
+</script>";
+            } else if ($row["type"] == "OFF") {
+                echo "<script type='text/javascript'>
+$('.onButton').removeClass('disabled');
+$('.offButton').addClass('disabled');
+</script>";
+            }
         } else {
             echo "0 results";
         }
     } else if ($DBpage == "history") {
-        $sql = "SELECT event.id, time, eventtype.type FROM event JOIN eventtype on event.type = eventtype.id ORDER BY event.id ASC";
+        $sql = "SELECT event.id, time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id ASC";
         $result = $conn->query($sql);
 
         if ($result) {
@@ -104,7 +113,7 @@ if (isset($_GET["insert"])) {
     $timestamp = "";
     $conn = DatabaseConnect();
 
-    $sql = "SELECT time, event.type FROM event JOIN eventtype on event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
+    $sql = "SELECT time, event.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
     $result = $conn->query($sql);
 
     if ($result) {
@@ -146,7 +155,7 @@ if (isset($_GET["insert"])) {
 
     if ($type != "TRIGGER") {
 
-        echo "<div class='index_time_source'>" . $timestamp . "</div> <div class='index_status_source'>" . $type;
+        echo "<div class='index_time_source'>" . $timestamp . "</div> <div class='index_status_source'>" . $type . "</div>";
     }
 }
 ?>
@@ -158,8 +167,17 @@ if (isset($_GET["insert"])) {
             context: document.body
         }).done(function (result) {
             $(".index_time").append("<div class='temp'>" + result + "</div>").html($(".index_time_source").html());
-            $(".index_status").append("<div class='temp'>" + result + "</div>").html($(".index_status_source").html());
+            var alarmStatus = $(".index_status").append("<div class='temp'>" + result + "</div>").html($(".index_status_source").html()).text();
             $(".temp").remove();
+
+            if (alarmStatus == "ON") {
+                $(".onButton").addClass("disabled");
+                $(".offButton").removeClass("disabled");
+            }
+            else if (alarmStatus == "OFF") {
+                $(".onButton").removeClass("disabled");
+                $(".offButton").addClass("disabled");
+            }
         });
     }
 </script>
