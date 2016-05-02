@@ -1,6 +1,7 @@
 <?php
 
-function DatabaseConnect(){
+function DatabaseConnect()
+{
 
     $servername = "localhost";
     $username = "root";
@@ -19,7 +20,8 @@ function DatabaseConnect(){
     return $conn;
 }
 
-function DatabaseSelect($DBpage){
+function DatabaseSelect($DBpage)
+{
 
     $conn = DatabaseConnect();
 
@@ -35,7 +37,7 @@ function DatabaseSelect($DBpage){
             echo "<tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row["time"] . "</td><td>" . $row["type"] . "</td>";
+                echo "<td class='index_time'>" . $row["time"] . "</td><td class='index_status'>" . $row["type"] . "</td>";
                 echo "</tr>";
                 break;
             }
@@ -43,9 +45,7 @@ function DatabaseSelect($DBpage){
         } else {
             echo "0 results";
         }
-    }
-
-    else if($DBpage == "history"){
+    } else if ($DBpage == "history") {
         $sql = "SELECT event.id, time, eventtype.type FROM event JOIN eventtype on event.type = eventtype.id ORDER BY event.id ASC";
         $result = $conn->query($sql);
 
@@ -69,7 +69,7 @@ function DatabaseSelect($DBpage){
 
             //decide color for the output
             $color = [];
-            for($i = 0; $i < sizeof($event); $i++) {
+            for ($i = 0; $i < sizeof($event); $i++) {
                 if ($event[$i]["type"] == "ON")
                     $color[$i] = "red";
                 else if ($event[$i]["type"] == "OFF")
@@ -78,9 +78,9 @@ function DatabaseSelect($DBpage){
                     $color[$i] = $color[$i - 1];
             }
 
-            for($i = sizeof($event) - 1; $i >= 0; $i--){
+            for ($i = sizeof($event) - 1; $i >= 0; $i--) {
 
-                if($event[$i]["type"] == "ON" || $event[$i]["type"] == "OFF")
+                if ($event[$i]["type"] == "ON" || $event[$i]["type"] == "OFF")
                     $color[$i] = "black";
 
                 echo "<tr style='color: $color[$i]; font-weight: bold;'>";
@@ -99,32 +99,69 @@ function DatabaseSelect($DBpage){
 }
 
 //DatabaseInsert
-if(isset($_GET["insert"])){
+if (isset($_GET["insert"])) {
 
     $type = $_GET["insert"];
+    $alarmStatus = $type;
+    $timestamp = "";
     $conn = DatabaseConnect();
 
-    $sql = "INSERT INTO event (id, time, type) VALUES (NULL, CURRENT_TIMESTAMP, $type)";
+    $sql = "SELECT time, event.type FROM event JOIN eventtype on event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
+    $result = $conn->query($sql);
 
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully<br>";
+    if ($result) {
+        $row = $result->fetch_assoc();
+        $timestamp = $row["time"];
+        $alarmStatus = $row["type"];
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "0 results";
     }
 
     $conn->close();
 
+    if (!($alarmStatus == $type)) {
+
+        $conn = DatabaseConnect();
+
+        $sql = "INSERT INTO event (id, time, type) VALUES (NULL, CURRENT_TIMESTAMP, $type)";
+        $timestamp = date("Y-m-d H:i:s");
+
+        if ($conn->query($sql) === TRUE) {
+            echo "New record created successfully<br>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+
+        $conn->close();
+    }
+
+    $conn = DatabaseConnect();
+
+    $sql = "SELECT eventtype.type FROM eventtype WHERE id=$type";
+    $result = $conn->query($sql);
+    if ($result) {
+        $row = $result->fetch_assoc();
+        $type = $row["type"];
+    } else {
+        echo "0 results";
+    }
+
+    if ($type != "TRIGGER") {
+
+        echo "<div class='index_time_source'>" . $timestamp . "</div> <div class='index_status_source'>" . $type;
+    }
 }
 ?>
 
 <script type="text/javascript">
-function DatabaseInsert(){
-    $.ajax({
-        url: "resources/include/database.php?insert=3",
-        context: document.body
-    }).done(function() {
-        alert("dooone");
-    });
-    return false;
-}
+    function DatabaseInsert(type) {
+        $.ajax({
+            url: "resources/include/database.php?insert=" + type,
+            context: document.body
+        }).done(function (result) {
+            $(".index_time").append("<div class='temp'>" + result + "</div>").html($(".index_time_source").html());
+            $(".index_status").append("<div class='temp'>" + result + "</div>").html($(".index_status_source").html());
+            $(".temp").remove();
+        });
+    }
 </script>
