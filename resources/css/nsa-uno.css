@@ -1,3 +1,19 @@
+.historyElement{
+    font-weight: bold;
+}
+
+.onColor{
+    color: red;
+}
+
+.offColor{
+    color: green;
+}
+
+.modeChangeColor{
+    color: black;
+}
+
 .table{
     width: 50%;
 }

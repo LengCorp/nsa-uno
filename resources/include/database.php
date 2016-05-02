@@ -68,22 +68,22 @@ function DatabaseSelect($DBpage)
             }
 
             //decide color for the output
-            $color = [];
+            $colorClass = [];
             for ($i = 0; $i < sizeof($event); $i++) {
                 if ($event[$i]["type"] == "ON")
-                    $color[$i] = "red";
+                    $colorClass[$i] = "onColor";
                 else if ($event[$i]["type"] == "OFF")
-                    $color[$i] = "green";
+                    $colorClass[$i] = "offColor";
                 else
-                    $color[$i] = $color[$i - 1];
+                    $colorClass[$i] = $colorClass[$i - 1];
             }
 
             for ($i = sizeof($event) - 1; $i >= 0; $i--) {
 
                 if ($event[$i]["type"] == "ON" || $event[$i]["type"] == "OFF")
-                    $color[$i] = "black";
+                    $colorClass[$i] = "modeChangeColor";
 
-                echo "<tr style='color: $color[$i]; font-weight: bold;'>";
+                echo "<tr class='$colorClass[$i] historyElement'>";
                 echo "<td>" . $event[$i]["id"] . "</td><td>" . $event[$i]["time"] . "</td><td>" . $event[$i]["type"] . "</td>";
                 echo "</tr>";
             }
