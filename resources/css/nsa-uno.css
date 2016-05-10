@@ -1,6 +1,9 @@
 body{
     overflow-y: scroll;
 }
+body.triggered{
+    background-color: red;
+}
 .historyElement{
     font-weight: bold;
 }
