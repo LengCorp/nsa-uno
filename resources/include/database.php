@@ -28,17 +28,15 @@ function DatabaseSelect($DBpage)
         $result = $conn->query($sql);
 
         if ($result) {
-            echo "<div class='container'>";
-            echo "<table class='table table-striped'>";
-            echo "<thead>";
-            echo "<tr><th>Time</th><th>Status</th></tr>";
-            echo "<tbody>";
             $row = $result->fetch_assoc();
-            echo "<tr>";
-            echo "<td class='index_time'>" . $row["time"] . "</td><td class='index_status'>" . $row["type"] . "</td>";
-            echo "</tr>";
-            echo "</div>";
-            if ($row["type"] == "ON"){
+            $time = $row["time"];
+            $type = $row["type"];
+            echo "<script type='text/javascript'>
+$('.index_time').html('$time');
+$('.index_status').html('$type');
+</script>";
+
+            if ($row["type"] == "ON") {
                 echo "<script type='text/javascript'>
 $('.onButton').addClass('disabled');
 $('.offButton').removeClass('disabled');
