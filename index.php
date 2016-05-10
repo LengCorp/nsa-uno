@@ -32,7 +32,7 @@ include 'resources/include/database.php';
 
 <?php
 
-DatabaseSelect("index");
+databaseSelect("index");
 
 
 include 'resources/include/footer.php';
