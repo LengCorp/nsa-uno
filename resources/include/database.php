@@ -54,7 +54,7 @@ $('.offButton').addClass('disabled');
 
 
     } else if ($DBpage == "history") {
-        $sql = "SELECT event.id, time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id ASC";
+        $sql = "SELECT time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC LIMIT 15";
         $result = $conn->query($sql);
 
         if ($result) {
@@ -62,14 +62,13 @@ $('.offButton').addClass('disabled');
             echo "<div class='container'>";
             echo "<table class='table table-striped'>";
             echo "<thead>";
-            echo "<tr><th>id</th><th>Time</th><th>Status</th></tr>";
+            echo "<tr><th>Time</th><th>Status</th></tr>";
             echo "<tbody>";
 
             $event = [];
             $i = 0;
 
             while ($row = $result->fetch_assoc()) {
-                $event[$i]["id"] = $row["id"];
                 $event[$i]["time"] = $row["time"];
                 $event[$i]["type"] = $row["type"];
                 $i++;
@@ -77,22 +76,22 @@ $('.offButton').addClass('disabled');
 
             //decide color for the output
             $colorClass = [];
-            for ($i = 0; $i < sizeof($event); $i++) {
+            for ($i = sizeof($event) - 1; $i >= 0; $i--) {
                 if ($event[$i]["type"] == "ON")
                     $colorClass[$i] = "onColor";
                 else if ($event[$i]["type"] == "OFF")
                     $colorClass[$i] = "offColor";
                 else
-                    $colorClass[$i] = $colorClass[$i - 1];
+                    $colorClass[$i] = $colorClass[$i + 1];
             }
 
-            for ($i = sizeof($event) - 1; $i >= 0; $i--) {
+            for ($i = 0; $i < sizeof($event); $i++) {
 
                 if ($event[$i]["type"] == "ON" || $event[$i]["type"] == "OFF")
                     $colorClass[$i] = "modeChangeColor";
 
                 echo "<tr class='$colorClass[$i] historyElement'>";
-                echo "<td>" . $event[$i]["id"] . "</td><td>" . $event[$i]["time"] . "</td><td>" . $event[$i]["type"] . "</td>";
+                echo "<td>" . $event[$i]["time"] . "</td><td>" . $event[$i]["type"] . " </td>";
                 echo "</tr>";
             }
 
@@ -131,13 +130,13 @@ if (isset($_GET["insert"])) {
 
         $conn = databaseConnect();
 
-        $sql = "INSERT INTO event (type) VALUES ($type)";
+        $sql = "INSERT INTO event(type) VALUES($type)";
         $timestamp = date("Y-m-d H:i:s");
 
         if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully<br>";
+            echo "New record created successfully <br>";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $sql . " <br>" . $conn->error;
         }
 
         $conn->close();
@@ -156,7 +155,7 @@ if (isset($_GET["insert"])) {
 
     if ($type != "TRIGGER") {
 
-        echo "<div class='index_time_source'>" . $timestamp . "</div> <div class='index_status_source'>" . $type . "</div>";
+        echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $type . "</div>";
     }
 
     tryToSoundTheAlarm();
