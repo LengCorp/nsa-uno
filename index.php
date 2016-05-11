@@ -23,11 +23,13 @@ include 'resources/include/database.php';
             <th>Time</th>
             <th>Status</th>
         </tr>
+        </thead>
         <tbody>
         <tr>
             <td class='index_time'></td>
             <td class='index_status'></td>
         </tr>
+        </tbody>
 </div>
 
 <?php
