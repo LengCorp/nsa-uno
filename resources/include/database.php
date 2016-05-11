@@ -24,7 +24,7 @@ function databaseSelect($DBpage)
     $conn = databaseConnect();
 
     if ($DBpage == "index") {
-        $sql = "SELECT time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.time DESC";
+        $sql = "SELECT time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
         $result = $conn->query($sql);
 
         if ($result) {
@@ -54,7 +54,7 @@ $('.offButton').addClass('disabled');
 
 
     } else if ($DBpage == "history") {
-        $sql = "SELECT event.id, time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.time ASC";
+        $sql = "SELECT event.id, time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id ASC";
         $result = $conn->query($sql);
 
         if ($result) {
@@ -114,7 +114,7 @@ if (isset($_GET["insert"])) {
     $timestamp = "";
     $conn = databaseConnect();
 
-    $sql = "SELECT time, event.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.time DESC";
+    $sql = "SELECT time, event.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
     $result = $conn->query($sql);
 
     if ($result) {
@@ -170,7 +170,7 @@ function tryToSoundTheAlarm()
     $time = time();
     $type = "OFF";
 
-    $sql = "SELECT time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.time DESC";
+    $sql = "SELECT time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
     $result = $conn->query($sql);
 
     if ($result) {
@@ -179,7 +179,7 @@ function tryToSoundTheAlarm()
         $type = $row["type"];
     }
 
-    $sql = "SELECT time FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'TRIGGER' ORDER BY event.time DESC";
+    $sql = "SELECT time FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'TRIGGER' ORDER BY event.id DESC";
     $result = $conn->query($sql);
     if ($result) {
         $row = $result->fetch_assoc();
