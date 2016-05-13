@@ -6,7 +6,7 @@ function databaseConnect()
     $servername = "localhost";
     $username = "simon";
     $password = "lammkott";
-    $dbname = "nsa-uno-DB";
+    $dbname = "nsa-uno-db";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -16,6 +16,27 @@ function databaseConnect()
     }
 
     return $conn;
+}
+
+function databaseLogin($username, $pass){
+
+    $conn = databaseConnect();
+
+    //$username = stripslashes($username);
+    //$pass = stripslashes($password);
+
+    //$pass = md5($password);
+
+    $sql = "SELECT * FROM login WHERE username = '".$username."' AND password = '".$pass."'";
+    $result = $conn->query($sql);
+
+    if ($result){
+        $conn->close();
+        return true;
+    } else {
+        $conn->close();
+        return false;
+    }
 }
 
 function databaseSelect($DBpage)
