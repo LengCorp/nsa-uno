@@ -21,4 +21,6 @@
 
 </head>
 <body>
+<?php
+session_start();
 
