@@ -8,7 +8,6 @@ if (isset($_POST['login'])) {
         $password = $_POST['password'];
         if (databaseLogin($username, $password)) {
             $_SESSION['username'] = $username;
-            $error_msg = $_SESSION['username'];
         } else {
             $error_msg = "Username or Password is invalid";
         }
