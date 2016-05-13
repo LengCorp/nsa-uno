@@ -11,13 +11,30 @@ include 'resources/include/database.php';
     <br>
     <button class="btn btn-primary offButton" onclick="javascript:return DatabaseInsert(2);">Stäng av larmet!</button>
     <br>
-    <button class="btn btn-primary triggerButton" onclick="javascript:return DatabaseInsert(3);">Skicka en trigger!</button>
+    <button class="btn btn-primary triggerButton" onclick="javascript:return DatabaseInsert(3);">Skicka en trigger!
+    </button>
+</div>
+<br>
+
+<div class='container'>
+    <table class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class='index_time'></td>
+            <td class='index_status'></td>
+        </tr>
+        </tbody>
 </div>
 
 <?php
 
-echo '<br>';
-DatabaseSelect("index");
+databaseSelect("index");
 
 
 include 'resources/include/footer.php';

@@ -7,7 +7,7 @@ include 'resources/include/database.php';
 
 <?php
 
-DatabaseSelect("history");
+databaseSelect("history");
 
 
 include 'resources/include/footer.php';

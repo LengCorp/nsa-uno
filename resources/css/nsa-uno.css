@@ -1,3 +1,9 @@
+body{
+    overflow-y: scroll;
+}
+body.triggered{
+    background-image: url("http://i155.photobucket.com/albums/s297/_Archaon_/Whisky/Samling/PICT4156.jpg");
+}
 .historyElement{
     font-weight: bold;
 }
