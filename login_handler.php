@@ -2,14 +2,19 @@
 $error_msg = '';
 if (isset($_POST['login'])) {
     if (empty($_POST['username']) || empty($_POST['password'])) {
-        $error_msg = "Username or Password is invalid";
+        $error_msg = "Fel användarnamn eller lösenord";
     } else {
         $username = $_POST['username'];
         $password = $_POST['password'];
+
+        $username = stripslashes($username);
+        $password = stripslashes($password);
+        $password = md5($password);
+
         if (databaseLogin($username, $password)) {
             $_SESSION['username'] = $username;
         } else {
-            $error_msg = "Username or Password is invalid";
+            $error_msg = "Fel användarnamn eller lösenord";
         }
     }
 }
