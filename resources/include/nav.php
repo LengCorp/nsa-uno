@@ -25,7 +25,7 @@
                 </li>
 
                 <li <?php if ($page == 'login') echo 'class="active"' ?>>
-                    <a href="login">Logga in</a>
+                    <a href="login"><?php if (isset($_SESSION["username"])) echo 'Logga ut'; else echo 'Logga in' ?></a>
                 </li>
 
             </ul>
