@@ -1,7 +1,6 @@
 RewriteEngine On
 RewriteBase /nsa-uno-website/
 RewriteRule ^historik(/?)$ historik.php [L]
-RewriteRule ^recipe/([0-9]*)/?$ recipe.php?id=$1 [L]
 RewriteRule ^login(/?)$ login.php [L]
 
 <Files .htaccess>
