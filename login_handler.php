@@ -1,7 +1,7 @@
 <?php
 $error_msg = '';
 if (isset($_SESSION['loginReferer'])) {
-    $error_msg = "Vänligen logga in för att komma åt sidan " . $_SESSION['loginReferer'] . ".";
+    $error_msg = "Vänligen logga in för att komma åt sidan <b>" . $_SESSION['loginReferer'] . "</b>.";
     unset($_SESSION['loginReferer']);
 }
 
