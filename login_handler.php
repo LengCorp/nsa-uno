@@ -1,5 +1,10 @@
 <?php
 $error_msg = '';
+if (isset($_SESSION['loginReferer'])) {
+    $error_msg = "Vänligen logga in för att komma åt sidan " . $_SESSION['loginReferer'] . ".";
+    unset($_SESSION['loginReferer']);
+}
+
 if (isset($_POST['login'])) {
     if (empty($_POST['username']) || empty($_POST['password'])) {
         $error_msg = "Fel användarnamn eller lösenord";
