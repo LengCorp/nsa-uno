@@ -18,19 +18,15 @@ function databaseConnect()
     return $conn;
 }
 
-function databaseLogin($username, $pass){
+function databaseLogin($username, $password){
 
     $conn = databaseConnect();
 
-    //$username = stripslashes($username);
-    //$pass = stripslashes($password);
-
-    //$pass = md5($password);
-
-    $sql = "SELECT * FROM login WHERE username = '".$username."' AND password = '".$pass."'";
+    $sql = "SELECT * FROM login WHERE username = '".$username."' AND password = '".$password."'";
     $result = $conn->query($sql);
+    $row = $result->num_rows;
 
-    if ($result){
+    if ($row == 1){
         $conn->close();
         return true;
     } else {
@@ -102,6 +98,8 @@ $('.offButton').addClass('disabled');
                     $colorClass[$i] = "onColor";
                 else if ($event[$i]["type"] == "OFF")
                     $colorClass[$i] = "offColor";
+                else if ($i == sizeof($event) - 1)
+                    $colorClass[$i] = "modeChangeColor";
                 else
                     $colorClass[$i] = $colorClass[$i + 1];
             }
