@@ -10,12 +10,13 @@ include 'login_handler.php';
 <?php
 
 if (isset($_SESSION['username'])) {
-    echo 'Du är inloggad som: ' . $_SESSION['username'];
+    echo '<div class="container">Du är inloggad som: ' . $_SESSION['username'];
     echo <<<HTML
 
 <form class="form-signin" action="login.php" method="post">
     <button class="btn btn-lg btn-primary btn-block" name="logout" type="submit">Logga ut</button>
 </form>
+</div>
 
 HTML;
 
@@ -30,6 +31,9 @@ HTML;
         <input type="text" name="username" id="username" class="form-control" placeholder="AnvÃ¤ndarnamn" required autofocus>
         <label for="password" class="sr-only">Password</label>
         <input type="password" name="password" id="password" class="form-control" placeholder="LÃ¶senord" required>
+HTML;
+    echo $error_msg;
+    echo <<<HTML
         <button class="btn btn-lg btn-primary btn-block" name="login" type="submit">Logga in</button>
     </form>
 
@@ -45,7 +49,6 @@ HTML;
 HTML;
 }
 
-echo $error_msg;
 ?>
 <?php
 include 'resources/include/footer.php';
