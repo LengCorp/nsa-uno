@@ -2,7 +2,6 @@
 $error_msg = '';
 if (isset($_SESSION['loginReferer'])) {
     $error_msg = "Vänligen logga in för att komma åt sidan <b>" . $_SESSION['loginReferer'] . "</b>.";
-    unset($_SESSION['loginReferer']);
 }
 
 if (isset($_POST['login'])) {
@@ -18,6 +17,13 @@ if (isset($_POST['login'])) {
 
         if (databaseLogin($username, $password)) {
             $_SESSION['username'] = $username;
+            if (isset($_SESSION["loginReferer"])) {
+                if ($_SESSION["loginReferer"] == "hem")
+                    header('Location: .');
+                else
+                    header('Location: ' . $_SESSION["loginReferer"]);
+                unset($_SESSION["loginReferer"]);
+            }
         } else {
             $error_msg = "Fel användarnamn eller lösenord";
         }
