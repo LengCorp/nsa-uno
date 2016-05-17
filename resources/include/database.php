@@ -183,10 +183,7 @@ if (isset($_GET["insert"])) {
         echo "0 results";
     }
 
-    if ($type != "TRIGGER") {
-
-        echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $type . "</div>";
-    }
+    echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $type . "</div>";
 
     tryToSoundTheAlarm();
 
