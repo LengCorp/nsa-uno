@@ -2,7 +2,7 @@
 $page = "login";
 include 'resources/include/header.php';
 include 'resources/include/nav.php';
-include 'resources/include/database.php';
+include 'resources/include/databaseFunction.php';
 
 include 'login_handler.php';
 ?>

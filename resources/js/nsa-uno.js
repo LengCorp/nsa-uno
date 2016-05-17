@@ -17,3 +17,9 @@ function DatabaseInsert(type) {
         }
     });
 }
+
+setInterval(function(){
+    $.ajax({
+        url: "resources/include/checkdata.php"
+    });
+}, 5000);

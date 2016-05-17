@@ -2,7 +2,7 @@
 $page = 'hem';
 include 'resources/include/header.php';
 include 'resources/include/nav.php';
-include 'resources/include/database.php';
+include 'resources/include/databaseFunction.php';
 
 if (isset($_SESSION["username"])) {
     echo <<<HTML
