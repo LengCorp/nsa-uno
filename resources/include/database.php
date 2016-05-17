@@ -41,7 +41,7 @@ function databaseSelect($DBpage)
     $conn = databaseConnect();
 
     if ($DBpage == "index") {
-        $sql = "SELECT time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
+        $sql = "SELECT time, eventtype.type, eventtype.id FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
         $result = $conn->query($sql);
 
         if ($result) {
@@ -132,6 +132,17 @@ if (isset($_GET["insert"])) {
     $timestamp = "";
     $conn = databaseConnect();
 
+    $sql = "SELECT id, type FROM eventtype WHERE type = 'ON' OR type ='OFF'";
+    $result = $conn->query($sql);
+    if ($result) {
+        while($row = $result->fetch_assoc()){
+            if ($row["type"] == $type){
+                $type = $row["id"];
+                break;
+            }
+        }
+    }
+
     $sql = "SELECT time, event.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
     $result = $conn->query($sql);
 
@@ -172,10 +183,7 @@ if (isset($_GET["insert"])) {
         echo "0 results";
     }
 
-    if ($type != "TRIGGER") {
-
-        echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $type . "</div>";
-    }
+    echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $type . "</div>";
 
     tryToSoundTheAlarm();
 
