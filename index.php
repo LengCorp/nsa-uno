@@ -4,7 +4,8 @@ include 'resources/include/header.php';
 include 'resources/include/nav.php';
 include 'resources/include/database.php';
 
-?>
+if (isset($_SESSION["username"])) {
+    echo <<<HTML
 
 <div class="container">
     <button class="btn btn-primary onButton" onclick="javascript:return DatabaseInsert(1);">Starta larmet!</button>
@@ -32,9 +33,15 @@ include 'resources/include/database.php';
         </tbody>
 </div>
 
-<?php
+HTML;
 
-databaseSelect("index");
+
+    databaseSelect("index");
+}
+else {
+    $_SESSION['loginReferer'] = $page;
+    header('Location: login');
+}
 
 
 include 'resources/include/footer.php';

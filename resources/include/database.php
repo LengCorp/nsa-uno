@@ -6,7 +6,7 @@ function databaseConnect()
     $servername = "localhost";
     $username = "simon";
     $password = "lammkott";
-    $dbname = "nsa-uno-DB";
+    $dbname = "nsa-uno-db";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -16,6 +16,23 @@ function databaseConnect()
     }
 
     return $conn;
+}
+
+function databaseLogin($username, $password){
+
+    $conn = databaseConnect();
+
+    $sql = "SELECT * FROM login WHERE username = '".$username."' AND password = '".$password."'";
+    $result = $conn->query($sql);
+    $row = $result->num_rows;
+
+    if ($row == 1){
+        $conn->close();
+        return true;
+    } else {
+        $conn->close();
+        return false;
+    }
 }
 
 function databaseSelect($DBpage)
@@ -81,6 +98,8 @@ $('.offButton').addClass('disabled');
                     $colorClass[$i] = "onColor";
                 else if ($event[$i]["type"] == "OFF")
                     $colorClass[$i] = "offColor";
+                else if ($i == sizeof($event) - 1)
+                    $colorClass[$i] = "modeChangeColor";
                 else
                     $colorClass[$i] = $colorClass[$i + 1];
             }

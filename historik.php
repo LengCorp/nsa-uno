@@ -7,7 +7,12 @@ include 'resources/include/database.php';
 
 <?php
 
-databaseSelect("history");
+if (isset($_SESSION["username"]))
+    databaseSelect("history");
+else {
+    $_SESSION['loginReferer'] = $page;
+    header('Location: login');
+}
 
 
 include 'resources/include/footer.php';
