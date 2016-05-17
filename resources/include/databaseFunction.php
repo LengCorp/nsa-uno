@@ -30,6 +30,7 @@ function databaseSelect($DBpage)
         if ($result) {
             $row = $result->fetch_assoc();
             $time = $row["time"];
+            $_SESSION["timeOfStatus"] = $time;
             $type = $row["type"];
             echo "<script type='text/javascript'>
 $('.index_time').html('$time');
@@ -40,11 +41,21 @@ $('.index_status').html('$type');
                 echo "<script type='text/javascript'>
 $('.onButton').addClass('disabled');
 $('.offButton').removeClass('disabled');
+$('body').removeClass('triggered');
 </script>";
             } else if ($row["type"] == "OFF") {
                 echo "<script type='text/javascript'>
 $('.onButton').removeClass('disabled');
 $('.offButton').addClass('disabled');
+$('body').removeClass('triggered');
+</script>";
+            }
+
+            else if ($row["type"] == "TRIGGER"){
+                echo "<script type='text/javascript'>
+$('.onButton').removeClass('disabled');
+$('.offButton').removeClass('disabled');
+$('body').addClass('triggered');
 </script>";
             }
             tryToSoundTheAlarm();
@@ -156,6 +167,7 @@ if (isset($_GET["insert"])) {
         echo "0 results";
     }
 
+    $_SESSION["timeOfStatus"] = $timestamp;
     echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $type . "</div>";
 
     tryToSoundTheAlarm();
