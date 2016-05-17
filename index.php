@@ -8,7 +8,7 @@ if (isset($_SESSION["username"])) {
     echo <<<HTML
 
 <div class="container">
-    <button class="btn btn-primary onButton" onclick="javascript:return DatabaseInsert('ON');">Starta larmet!</button>
+    <button class="btn btn-primary onButton" onclick="javascript:return DatabaseInsert('ONnn');">Starta larmet!</button>
     <br>
     <button class="btn btn-primary offButton" onclick="javascript:return DatabaseInsert('OFF');">Stäng av larmet!</button>
 </div>
