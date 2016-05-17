@@ -16,6 +16,10 @@ body.triggered{
     color: black;
 }
 
+.newEvent{
+    display: none;
+}
+
 .table{
     width: 50%;
 }
