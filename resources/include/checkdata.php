@@ -3,14 +3,14 @@ include('database.php');
 session_start();
 
 $conn = databaseConnect();
-$sql = "SELECT time, eventtype.type, eventtype.id FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC";
+$sql = "SELECT eventtype.type, eventtype.id FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC";
 $result = $conn->query($sql);
 
 if ($result) {
     $row = $result->fetch_assoc();
-    $time = $row["time"];
-    if ($time > $_SESSION["timeOfStatus"]) {
+    $id = $row["id"];
+    if ($id > $_SESSION["idOfStatus"]) {
         echo "true";
-        $_SESSION["timeOfStatus"] = $time;
+        $_SESSION["idOfStatus"] = $id;
     }
 }

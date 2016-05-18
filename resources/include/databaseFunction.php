@@ -31,7 +31,7 @@ function databaseSelect($DBpage)
         if ($result) {
             $row = $result->fetch_assoc();
             $time = $row["time"];
-            $_SESSION["timeOfStatus"] = $time;
+            $_SESSION["idOfStatus"] = $row["id"];
             $type = $row["type"];
             echo "<script type='text/javascript'>
 $('.index_time').html('$time');
@@ -92,8 +92,9 @@ $('.index_status').html('$type');
 //DatabaseInsert
 if (isset($_GET["insert"])) {
 
+    session_start();
     $conn = databaseConnect();
-    $sql = "SELECT eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC LIMIT 1";
+    $sql = "SELECT eventtype.type, event.id FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC LIMIT 1";
     $result = $conn->query($sql);
     if ($result) {
         $row = $result->fetch_assoc();
@@ -103,14 +104,17 @@ if (isset($_GET["insert"])) {
         } else if ($row["type"] == "OFF") {
             getIdAndInsert($conn, 'ON');
             $newStatus = "ON";
-        } else if ($row["type"] == "TRIGGER") {
+        } else if ($row["type"] == "TRIGGER" && $_SESSION["showedTrigger"] == "done") {
+            $_SESSION["showedTrigger"] = "waiting";
             getIdAndInsert($conn, 'OFF');
             $newStatus = "OFF";
+        } else {
+            $newStatus = $row["type"];
         }
         $conn->close();
         changeButtonText($newStatus);
         $timestamp = date("Y-m-d H:i:s");
-        $_SESSION["timeOfStatus"] = $timestamp;
+        $_SESSION["idOfStatus"] = $row["id"];
         echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $newStatus . "</div>";
     }
 }
@@ -145,6 +149,7 @@ $('body').removeClass('triggered');
 $('.mainButton').html('Restart');
 $('body').addClass('triggered');
 </script>";
+        $_SESSION["showedTrigger"] = "done";
     }
 }
 
