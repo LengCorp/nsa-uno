@@ -16,7 +16,7 @@ if (isset($_SESSION["username"])) {
     <table class='table table-striped'>
         <thead>
         <tr>
-            <th>Time</th>
+            <th>Tid</th>
             <th>Status</th>
         </tr>
         </thead>

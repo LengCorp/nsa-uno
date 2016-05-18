@@ -54,7 +54,7 @@ $('.index_status').html('$type');
             echo "<div class='container'>";
             echo "<table class='table table-striped'>";
             echo "<thead>";
-            echo "<tr><th>Time</th><th>Status</th></tr>";
+            echo "<tr><th>Tid</th><th>Status</th></tr>";
             echo "<tbody>";
 
             $event = [];
@@ -99,14 +99,14 @@ if (isset($_GET["insert"])) {
     if ($result) {
         $row = $result->fetch_assoc();
         if ($row["type"] == "ON") {
-            getIdAndInsert($conn, 'OFF');
+            getIdAndInsert($conn, "OFF");
             $newStatus = "OFF";
         } else if ($row["type"] == "OFF") {
-            getIdAndInsert($conn, 'ON');
+            getIdAndInsert($conn, "ON");
             $newStatus = "ON";
         } else if ($row["type"] == "TRIGGER" && $_SESSION["showedTrigger"] == "done") {
             $_SESSION["showedTrigger"] = "waiting";
-            getIdAndInsert($conn, 'OFF');
+            getIdAndInsert($conn, "OFF");
             $newStatus = "OFF";
         } else {
             $newStatus = $row["type"];
@@ -136,17 +136,17 @@ function getIdAndInsert($conn, $state)
 function changeButtonText($state){
     if ($state == "ON") {
         echo "<script type='text/javascript'>
-$('.mainButton').html('OFF');
+$('.mainButton').html('Stäng av');
 $('body').removeClass('triggered');
 </script>";
     } else if ($state == "OFF") {
         echo "<script type='text/javascript'>
-$('.mainButton').html('ON');
+$('.mainButton').html('Starta');
 $('body').removeClass('triggered');
 </script>";
     } else if ($state == "TRIGGER") {
         echo "<script type='text/javascript'>
-$('.mainButton').html('Restart');
+$('.mainButton').html('Stäng av (alarmet har gått!)');
 $('body').addClass('triggered');
 </script>";
         $_SESSION["showedTrigger"] = "done";
