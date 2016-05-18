@@ -1,6 +1,6 @@
-function DatabaseInsert(type) {
+function DatabaseInsert() {
     $.ajax({
-        url: "resources/include/databaseFunction.php?insert=" + type,
+        url: "resources/include/databaseFunction.php?insert=true",
         context: document.body
     }).done(function (result) {
         $(".index_time").append("<div class='temp'>" + result + "</div>").html($(".index_time_source").html());
@@ -10,10 +10,12 @@ function DatabaseInsert(type) {
         if (alarmStatus == "ON") {
             $(".onButton").addClass("disabled");
             $(".offButton").removeClass("disabled");
+            $("body").removeClass("triggered");
         }
         else if (alarmStatus == "OFF") {
             $(".onButton").removeClass("disabled");
             $(".offButton").addClass("disabled");
+            $("body").removeClass("triggered");
         }
     });
 }

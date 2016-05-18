@@ -1,15 +1,16 @@
 <?php
 include('database.php');
 
-function databaseLogin($username, $password){
+function databaseLogin($username, $password)
+{
 
     $conn = databaseConnect();
 
-    $sql = "SELECT * FROM login WHERE username = '".$username."' AND password = '".$password."'";
+    $sql = "SELECT * FROM login WHERE username = '" . $username . "' AND password = '" . $password . "'";
     $result = $conn->query($sql);
     $row = $result->num_rows;
 
-    if ($row == 1){
+    if ($row == 1) {
         $conn->close();
         return true;
     } else {
@@ -37,28 +38,8 @@ $('.index_time').html('$time');
 $('.index_status').html('$type');
 </script>";
 
-            if ($row["type"] == "ON") {
-                echo "<script type='text/javascript'>
-$('.onButton').addClass('disabled');
-$('.offButton').removeClass('disabled');
-$('body').removeClass('triggered');
-</script>";
-            } else if ($row["type"] == "OFF") {
-                echo "<script type='text/javascript'>
-$('.onButton').removeClass('disabled');
-$('.offButton').addClass('disabled');
-$('body').removeClass('triggered');
-</script>";
-            }
+            changeButtonText($type);
 
-            else if ($row["type"] == "TRIGGER"){
-                echo "<script type='text/javascript'>
-$('.onButton').removeClass('disabled');
-$('.offButton').removeClass('disabled');
-$('body').addClass('triggered');
-</script>";
-            }
-            tryToSoundTheAlarm();
         } else {
             echo "0 results";
         }
@@ -111,102 +92,60 @@ $('body').addClass('triggered');
 //DatabaseInsert
 if (isset($_GET["insert"])) {
 
-    $type = $_GET["insert"];
-    $alarmStatus = $type;
-    $timestamp = "";
     $conn = databaseConnect();
-
-    $sql = "SELECT id, type FROM eventtype WHERE type = 'ON' OR type ='OFF'";
+    $sql = "SELECT eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC LIMIT 1";
     $result = $conn->query($sql);
-    if ($result) {
-        while($row = $result->fetch_assoc()){
-            if ($row["type"] == $type){
-                $type = $row["id"];
-                break;
-            }
-        }
-    }
-
-    $sql = "SELECT time, event.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
-    $result = $conn->query($sql);
-
     if ($result) {
         $row = $result->fetch_assoc();
-        $timestamp = $row["time"];
-        $alarmStatus = $row["type"];
-    } else {
-        echo "0 results";
-    }
-
-    $conn->close();
-
-    if (!($alarmStatus == $type)) {
-
-        $conn = databaseConnect();
-
-        $sql = "INSERT INTO event(type) VALUES($type)";
-        $timestamp = date("Y-m-d H:i:s");
-
-        if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully <br>";
-        } else {
-            echo "Error: " . $sql . " <br>" . $conn->error;
+        if ($row["type"] == "ON") {
+            getIdAndInsert($conn, 'OFF');
+            $newStatus = "OFF";
+        } else if ($row["type"] == "OFF") {
+            getIdAndInsert($conn, 'ON');
+            $newStatus = "ON";
+        } else if ($row["type"] == "TRIGGER") {
+            getIdAndInsert($conn, 'OFF');
+            $newStatus = "OFF";
         }
-
         $conn->close();
+        changeButtonText($newStatus);
+        $timestamp = date("Y-m-d H:i:s");
+        $_SESSION["timeOfStatus"] = $timestamp;
+        echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $newStatus . "</div>";
     }
-
-    $conn = databaseConnect();
-
-    $sql = "SELECT eventtype.type FROM eventtype WHERE id=$type";
-    $result = $conn->query($sql);
-    if ($result) {
-        $row = $result->fetch_assoc();
-        $type = $row["type"];
-    } else {
-        echo "0 results";
-    }
-
-    $_SESSION["timeOfStatus"] = $timestamp;
-    echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $type . "</div>";
-
-    tryToSoundTheAlarm();
-
-    $conn->close();
 }
 
-function tryToSoundTheAlarm()
+function getIdAndInsert($conn, $state)
 {
-    $conn = databaseConnect();
-    $time = time();
-    $type = "OFF";
-
-    $sql = "SELECT time, eventtype.type FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'ON' OR eventtype.type = 'OFF' ORDER BY event.id DESC";
+    $sql = "SELECT id FROM eventtype WHERE type = '$state'";
     $result = $conn->query($sql);
-
     if ($result) {
         $row = $result->fetch_assoc();
-        $time = $row["time"];
-        $type = $row["type"];
+        $value = $row["id"];
+        $sql = "INSERT INTO event(type) VALUES($value)";
+        $conn->query($sql);
+    } else {
+        echo "Error: no result";
     }
+}
 
-    $sql = "SELECT time FROM event JOIN eventtype ON event.type = eventtype.id WHERE eventtype.type = 'TRIGGER' ORDER BY event.id DESC";
-    $result = $conn->query($sql);
-    if ($result) {
-        $row = $result->fetch_assoc();
-        $time2 = $row["time"];
-        if ($time2 > $time) {
-            echo "<script type='text/javascript'>
-$('body').addClass('triggered');
-</script>";
-            $_SESSION["informedOwner"] = false;
-        } else {
-            echo "<script type='text/javascript'>
+function changeButtonText($state){
+    if ($state == "ON") {
+        echo "<script type='text/javascript'>
+$('.mainButton').html('OFF');
 $('body').removeClass('triggered');
 </script>";
-        }
+    } else if ($state == "OFF") {
+        echo "<script type='text/javascript'>
+$('.mainButton').html('ON');
+$('body').removeClass('triggered');
+</script>";
+    } else if ($state == "TRIGGER") {
+        echo "<script type='text/javascript'>
+$('.mainButton').html('Restart');
+$('body').addClass('triggered');
+</script>";
     }
-    $conn->close();
 }
 
 ?>

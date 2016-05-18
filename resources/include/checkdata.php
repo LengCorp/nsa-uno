@@ -11,5 +11,6 @@ if ($result) {
     $time = $row["time"];
     if ($time > $_SESSION["timeOfStatus"]) {
         echo "true";
+        $_SESSION["timeOfStatus"] = $time;
     }
 }
