@@ -21,11 +21,11 @@
                 </li>
 
                 <li <?php if ($page == 'historik') echo 'class="active"' ?>>
-                    <a href="historik">Historik</a>
+                    <a href="historik.php">Historik</a>
                 </li>
 
                 <li <?php if ($page == 'login') echo 'class="active"' ?>>
-                    <a href="login"><?php if (isset($_SESSION["username"])) echo 'Logga ut'; else echo 'Logga in' ?></a>
+                    <a href="login.php"><?php if (isset($_SESSION["username"])) echo 'Logga ut'; else echo 'Logga in' ?></a>
                 </li>
 
             </ul>

@@ -13,11 +13,11 @@ body.triggered{
 }
 
 .offColor{
-    color: green;
+    color: black;
 }
 
-.modeChangeColor{
-    color: black;
+.newEvent{
+    display: none;
 }
 
 .table{

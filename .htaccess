@@ -1,7 +1,9 @@
 RewriteEngine On
-RewriteBase /nsa-uno-website/
+
+<IfModule mod_rewrite.c>
 RewriteRule ^historik(/?)$ historik.php [L]
 RewriteRule ^login(/?)$ login.php [L]
+</IfModule>
 
 <Files .htaccess>
 Order Allow,Deny

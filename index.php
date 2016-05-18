@@ -2,15 +2,13 @@
 $page = 'hem';
 include 'resources/include/header.php';
 include 'resources/include/nav.php';
-include 'resources/include/database.php';
+include 'resources/include/databaseFunction.php';
 
 if (isset($_SESSION["username"])) {
     echo <<<HTML
 
 <div class="container">
-    <button class="btn btn-primary onButton" onclick="javascript:return DatabaseInsert('ON');">Starta larmet!</button>
-    <br>
-    <button class="btn btn-primary offButton" onclick="javascript:return DatabaseInsert('OFF');">Stäng av larmet!</button>
+    <button class="btn btn-primary mainButton" onclick="javascript:return DatabaseInsert();">asdasd!</button>
 </div>
 <br>
 
@@ -18,7 +16,7 @@ if (isset($_SESSION["username"])) {
     <table class='table table-striped'>
         <thead>
         <tr>
-            <th>Time</th>
+            <th>Tid</th>
             <th>Status</th>
         </tr>
         </thead>
@@ -37,7 +35,7 @@ HTML;
 }
 else {
     $_SESSION['loginReferer'] = $page;
-    header('Location: login');
+    header('Location: login.php');
 }
 
 

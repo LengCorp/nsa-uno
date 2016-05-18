@@ -21,7 +21,7 @@ if (isset($_POST['login'])) {
                 if ($_SESSION["loginReferer"] == "hem")
                     header('Location: .');
                 else
-                    header('Location: ' . $_SESSION["loginReferer"]);
+                    header('Location: ' . $_SESSION["loginReferer"] . '.php');
                 unset($_SESSION["loginReferer"]);
             }
         } else {
