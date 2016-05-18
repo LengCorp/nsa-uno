@@ -35,7 +35,7 @@ HTML;
 }
 else {
     $_SESSION['loginReferer'] = $page;
-    header('Location: login');
+    header('Location: login.php');
 }
 
 

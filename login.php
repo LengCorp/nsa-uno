@@ -28,9 +28,9 @@ HTML;
     <form class="form-signin" action="" method="post">
         <h2 class="form-signin-heading">Logga in</h2>
         <label for="username" class="sr-only">Username</label>
-        <input type="text" name="username" id="username" class="form-control" placeholder="AnvÃ¤ndarnamn" required autofocus>
+        <input type="text" name="username" id="username" class="form-control" placeholder="Användarnamn" required autofocus>
         <label for="password" class="sr-only">Password</label>
-        <input type="password" name="password" id="password" class="form-control" placeholder="LÃ¶senord" required>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Lösenord" required>
 HTML;
     echo $error_msg;
     echo <<<HTML

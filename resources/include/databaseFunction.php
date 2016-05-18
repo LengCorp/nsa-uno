@@ -25,7 +25,7 @@ function databaseSelect($DBpage)
     $conn = databaseConnect();
 
     if ($DBpage == "index") {
-        $sql = "SELECT time, eventtype.type, eventtype.id FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC";
+        $sql = "SELECT time, eventtype.type, eventtype.id FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC LIMIT 1";
         $result = $conn->query($sql);
 
         if ($result) {
