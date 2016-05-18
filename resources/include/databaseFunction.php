@@ -25,7 +25,7 @@ function databaseSelect($DBpage)
     $conn = databaseConnect();
 
     if ($DBpage == "index") {
-        $sql = "SELECT time, eventtype.type, eventtype.id FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC LIMIT 1";
+        $sql = "SELECT time, eventtype.type, event.id FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC LIMIT 1";
         $result = $conn->query($sql);
 
         if ($result) {
@@ -94,7 +94,7 @@ if (isset($_GET["insert"])) {
 
     session_start();
     $conn = databaseConnect();
-    $sql = "SELECT eventtype.type, event.id FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC LIMIT 1";
+    $sql = "SELECT eventtype.type, event.id, event.time FROM event JOIN eventtype ON event.type = eventtype.id ORDER BY event.id DESC LIMIT 1";
     $result = $conn->query($sql);
     if ($result) {
         $row = $result->fetch_assoc();
@@ -113,7 +113,7 @@ if (isset($_GET["insert"])) {
         }
         $conn->close();
         changeButtonText($newStatus);
-        $timestamp = date("Y-m-d H:i:s");
+        $timestamp = $row["time"];
         $_SESSION["idOfStatus"] = $row["id"];
         echo "<div class='index_time_source'>" . $timestamp . "</div><div class='index_status_source'>" . $newStatus . "</div>";
     }
