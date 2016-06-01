@@ -4,8 +4,8 @@ function databaseConnect()
 {
 
     $servername = "localhost";
-    $username = "simon";
-    $password = "lammkott";
+    $username = "";
+    $password = "";
     $dbname = "nsa-uno-db";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
